@@ -44,7 +44,14 @@ public class Order {
 	public void sumPrice(){
 		totalFee = 0;
 		for (OrderDetail od : detailList) {
-			totalFee += (od.getBook().getPrice() * od.getAmount() );
+			if ( od.getBook() != null) {
+				totalFee += ( od.getBook().getPrice() * od.getAmount() );
+				continue;
+			}
+			if ( od.getCd() != null){
+				totalFee += ( od.getCd().getPrice() * od.getAmount() );
+				continue;
+			}
 		}
 	}
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import model.Auther;
 import model.Book;
+import model.Cd;
 import model.Customer;
 import model.Order;
 import model.OrderDetail;
@@ -26,7 +27,7 @@ public class SenarioTestCase {
 	 * シナリオ0. 本を注文する。
 	 */
 	@Test
-	public void 本を注文する() {
+	public void 本を注文するテスト() {
 		// 顧客の作成
 		Customer customer = new Customer("customer1", "hogehoge@gmail.com");
 		// 著者の作成
@@ -55,7 +56,45 @@ public class SenarioTestCase {
 		detailList.add(od);
 		order.sumPrice();
 		order.setId(1);
+
 		assertEquals(51.21f, order.getTotalFee(), 0);
 		assertEquals(book, order.getDetailList().get(0).getBook());
+	}
+
+	/**
+	 * シナリオ1. CDを注文する。
+	 */
+	@Test
+	public void CDを注文するテスト() {
+		// 顧客の作成
+		Customer customer = new Customer("customer1", "hogehoge@gmail.com");
+		// CDの作成
+		Cd cd = new Cd();
+		cd.setTitle("The Very Best Of Gispsy Kings");
+		cd.setJanCode("************");
+		cd.setPrice(1728f);
+		// 注文の作成
+		Order order = new Order();
+		order.setCustomer(customer);
+		order.setDate( Calendar.getInstance().getTime() );
+		List<OrderDetail> detailList = new ArrayList<OrderDetail>();
+		order.setDetailList(detailList);
+		// 注文詳細の作成
+		OrderDetail od = new OrderDetail();
+		od.setAmount(1);
+		od.setCd(cd);
+		od.setOrder(order);
+
+		detailList.add(od);
+		order.sumPrice();
+		order.setId(1);
+
+		// 注文の合計金額をチェック
+		assertEquals(1728f, order.getTotalFee(), 0);
+
+		// オーダーがCDのみであるのをチェック
+		assertEquals(1, order.getDetailList().size() );
+		assertNull( order.getDetailList().get(0).getBook() );
+		assertEquals(cd, order.getDetailList().get(0).getCd() );
 	}
 }
