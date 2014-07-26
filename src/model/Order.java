@@ -44,14 +44,17 @@ public class Order {
 	public void sumPrice(){
 		totalFee = 0;
 		for (OrderDetail od : detailList) {
-			if ( od.getBook() != null) {
-				totalFee += ( od.getBook().getPrice() * od.getAmount() );
-				continue;
-			}
-			if ( od.getCd() != null){
-				totalFee += ( od.getCd().getPrice() * od.getAmount() );
-				continue;
+			if (od.getItem() != null){
+				totalFee += ( od.getItem().getPrice() * od.getAmount() );
 			}
 		}
+	}
+	/** 合計点数を計算 */
+	public int count(){
+		int count = 0;
+		for(OrderDetail od : detailList){
+			count += od.getAmount();
+		}
+		return count;
 	}
 }
